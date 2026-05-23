@@ -3,15 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio Game</title>
+  <title>Portfolio Game - Pixel 8Bit</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="game-area">
-    <div id="player">🧑‍💻</div>
-    <div class="zone" id="zone-about" data-info="Привет! Я Александр Горбачев. Люблю чистый код и нестандартные задачи."></div>
-    <div class="zone" id="zone-skills" data-info="Стек: JS, Python, Git, React, работа с API и деплой на Linux."></div>
-    <div id="info-panel">Нажми стрелки, чтобы двигаться →</div>
+  <div id="game-wrapper">
+    <div class="wall"></div>
+    <div id="game-area">
+      <div id="sky"></div>
+      
+      <!-- Солнце: крупнее, ярче, ниже текста -->
+      <div id="layer-sun"></div>
+      
+      <!-- Облака: меньше штук (4), крупнее, опущены -->
+      <div id="layer-clouds">
+        <div class="cloud" style="left: 60px; top: 90px;"></div>
+        <div class="cloud" style="left: 280px; top: 100px;"></div>
+        <div class="cloud" style="left: 520px; top: 85px;"></div>
+        <div class="cloud" style="left: 760px; top: 105px;"></div>
+      </div>
+
+      <!-- Лес: 6 деревьев, масштаб 1.5x -->
+      <div id="layer-forest">
+        <div class="tree" style="left: 40px;"></div>
+        <div class="tree" style="left: 200px; transform: scale(1.5) rotate(-2deg);"></div>
+        <div class="tree" style="left: 380px; transform: scale(1.4);"></div>
+        <div class="tree" style="left: 560px; transform: scale(1.5) rotate(1deg);"></div>
+        <div class="tree" style="left: 750px; transform: scale(1.3);"></div>
+        <div class="tree" style="left: 920px; transform: scale(1.5);"></div>
+      </div>
+
+      <div id="world">
+        <div id="ground"></div>
+        <div id="player"></div>
+        <div id="goal"></div>
+
+        <!-- Платформы: крупнее, равномерно -->
+        <div class="platform" style="left: 50px; top: 62vh; width: 200px; height: 36px;"></div>
+        <div class="platform" style="left: 280px; top: 52vh; width: 200px; height: 36px;"></div>
+        <div class="platform" style="left: 510px; top: 62vh; width: 200px; height: 36px;"></div>
+        <div class="platform" style="left: 740px; top: 52vh; width: 200px; height: 36px;"></div>
+
+        <!-- Монетки: крупнее -->
+        <div class="coin" style="left: 130px; top: 52vh;" data-text="Привет! Я Александр. Пишу чистый код и создаю быстрые IT-решения."></div>
+        <div class="coin" style="left: 360px; top: 42vh;" data-text="Стек: JavaScript, React, Node.js, Git, работа с API и БД."></div>
+        <div class="coin" style="left: 590px; top: 52vh;" data-text="Реализую MVP для стартапов. Надежно, с фокусом на результат."></div>
+        <div class="coin" style="left: 820px; top: 42vh;" data-text="Контакты: email@example.com | GitHub | Telegram."></div>
+      </div>
+
+      <div id="header-text">Стрелки: движение | Пробел: прыжок<br>Собери монетки и доберись до флага.</div>
+      
+      <div id="final-screen">
+        <div class="final-box">
+          <h2>Спасибо, что посетили мой сайт!</h2>
+          <p>Связаться со мной можно здесь:</p>
+          <div class="social-links">
+            <a href="https://github.com/asg-55" target="_blank">GitHub</a> | 
+            <a href="https://t.me/твой_ник" target="_blank">Telegram</a> | 
+            <a href="mailto:email@example.com">Email</a>
+          </div>
+          <button id="restart-btn">Играть снова</button>
+        </div>
+      </div>
+    </div>
+    <div class="wall"></div>
   </div>
   <script src="game.js"></script>
 </body>
