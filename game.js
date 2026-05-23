@@ -7,13 +7,13 @@ const coins = document.querySelectorAll('.coin');
 const goal = document.getElementById('goal');
 const finalScreen = document.getElementById('final-screen');
 const restartBtn = document.getElementById('restart-btn');
+const themeToggle = document.getElementById('theme-toggle');
 
 const GAME_W = 1024;
-// Физика замедлена и облегчена
-const GRAVITY = 0.38;
-const JUMP_FORCE = -9.8;
-const MOVE_SPEED = 1.4;
-const PW = 48, PH = 48;
+const GRAVITY = 0.28;
+const JUMP_FORCE = -7.5;
+const MOVE_SPEED = 1.6;
+const PW = 42, PH = 42;
 
 let px = 100, py = 0, vx = 0, vy = 0;
 let isGrounded = false;
@@ -51,14 +51,12 @@ function update() {
   platforms.forEach(plat => {
     const r = plat.getBoundingClientRect();
     const pL = r.left - gaRect.left, pR = r.right - gaRect.left, pT = r.top - gaRect.top;
-    // Увеличен допуск под новый размер
-    if (px + PW > pL && px < pR && py + PH >= pT && py + PH <= pT + 18 && vy >= 0) {
+    if (px + PW > pL && px < pR && py + PH >= pT && py + PH <= pT + 14 && vy >= 0) {
       py = pT - PH; vy = 0; isGrounded = true;
     }
   });
 
   player.style.left = `${px}px`; player.style.top = `${py}px`;
-
   checkCoins(); checkGoal();
   requestAnimationFrame(update);
 }
@@ -73,7 +71,8 @@ function checkCoins() {
     const cCX = cr.left + cr.width/2 - gaRect.left;
     const cCY = cr.top + cr.height/2 - gaRect.top;
     
-    if (Math.hypot(pCX - cCX, pCY - cCY) < 55) {
+    // Радиус увеличен под размер монет 26x36
+    if (Math.hypot(pCX - cCX, pCY - cCY) < 50) {
       c.classList.add('collected');
       header.innerHTML = c.dataset.text;
       header.style.borderColor = '#FFD700';
@@ -87,7 +86,7 @@ function checkGoal() {
   const gr = goal.getBoundingClientRect();
   const gL = gr.left - gaRect.left, gR = gr.right - gaRect.left, gT = gr.top - gaRect.top;
 
-  if (px + PW > gL && px < gR + 25 && py + PH > gT) triggerFinish();
+  if (px + PW > gL && px < gR + 22 && py + PH > gT) triggerFinish();
 }
 
 function triggerFinish() {
@@ -98,22 +97,13 @@ function triggerFinish() {
 
 function spawnConfetti() {
   const colors = ['#FFD700', '#FF4500', '#00FF00', '#00BFFF', '#FF00FF', '#FFF'];
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 80; i++) {
     const c = document.createElement('div'); c.className = 'confetti';
-    c.style.left = Math.random() * GAME_W + 'px';
-    c.style.top = '-10px';
+    c.style.left = Math.random() * GAME_W + 'px'; c.style.top = '-10px';
     c.style.background = colors[Math.floor(Math.random() * colors.length)];
     c.style.animation = `fall ${1.5 + Math.random()*2}s linear forwards`;
     c.style.animationDelay = `${Math.random() * 0.8}s`;
-    gameArea.appendChild(c);
-    setTimeout(() => c.remove(), 4000);
-  }
-  for (let i = 0; i < 30; i++) {
-    const p = document.createElement('div'); p.className = 'confetti';
-    p.style.left = (GAME_W - 70) + 'px'; p.style.top = (window.innerHeight * 0.75 - 50) + 'px';
-    p.style.background = colors[Math.floor(Math.random() * colors.length)];
-    p.style.animation = `pop ${0.5 + Math.random()*0.4}s ease-out forwards`;
-    gameArea.appendChild(p); setTimeout(() => p.remove(), 1200);
+    gameArea.appendChild(c); setTimeout(() => c.remove(), 4000);
   }
 }
 
@@ -125,6 +115,10 @@ restartBtn.addEventListener('click', () => {
   header.innerHTML = "Стрелки: движение | Пробел: прыжок<br>Собери монетки и доберись до флага.";
   header.style.borderColor = '#fff';
   coins.forEach(c => c.classList.remove('collected'));
+});
+
+themeToggle.addEventListener('change', () => {
+  document.body.classList.toggle('night', themeToggle.checked);
 });
 
 py = ground.getBoundingClientRect().top - gameArea.getBoundingClientRect().top - PH - 1;
